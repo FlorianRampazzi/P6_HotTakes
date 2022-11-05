@@ -1,3 +1,4 @@
+// Importation des fichiers et package nécessaires
 const http = require('http');
 const app = require('./app');
 
@@ -14,9 +15,11 @@ const normalizePort = val => {
   return false;
 };
 
+// Définition du port utilisé
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
+//  Définition de la récupération des erreurs
 const errorHandler = error => {
   if (error.syscall !== 'listen') {
     throw error;
@@ -37,8 +40,10 @@ const errorHandler = error => {
   }
 };
 
+// Création du server depuis app.js
 const server = http.createServer(app);
 
+// Application de l'écoute d'erreurs sur le serveur
 server.on('error', errorHandler);
 server.on('listening', () => {
   const address = server.address();
