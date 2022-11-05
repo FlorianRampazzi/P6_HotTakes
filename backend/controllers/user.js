@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const jsonWebToken = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
 exports.signUp = (req, res, next) => {
@@ -10,14 +10,13 @@ exports.signUp = (req, res, next) => {
                 password: hash
             });
             user.save()
-                .then(() => req.status(201).json({message : 'Nouvel utilisateur enregistré !'}))
+                .then(() => res.status(201).json({message : 'Nouvel utilisateur enregistré !'}))
                 .catch( error => res.status(400).json({message : error.message}));
         })
-        .catch( error => res.status(500).json({error}));
+        .catch( error => res.status(400).json({error}));
 };
 
 exports.login = (req, res, next) => {
-    console.log(req.body.email);
     User.findOne({email: req.body.email})
         .then(user => {
             if (user === null) {
@@ -30,15 +29,15 @@ exports.login = (req, res, next) => {
                         } else {
                             res.status(200).json({
                                 userId: user._id,
-                                token: jsonWebToken.sign(
+                                token: jwt.sign(
                                     {userId: user._id},
-                                    'RANDOM_SECRET_KEY',
+                                    'RANDOM_TOKEN_SECRET',
                                     {expiresIn: '24h'}
                                 )
                             })
                         }
                     })
-                    .catch( error => res.status(404).json({message : 'Identifiant et/ou mot de passe incorrect'}));
+                    .catch( error => res.status(404).json({error}));
             }
         })
         .catch( error => res.status(500).json({error}));

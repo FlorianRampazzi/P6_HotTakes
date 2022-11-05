@@ -2,9 +2,12 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const app = express();
+const path = require('path');
+
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 const userRoutes = require('./routes/user');
-const sauceRoutes = require('./routes/sauce')
+const sauceRoutes = require('./routes/sauce');
 
 app.use(express.json());
 //mongodb+srv://FRSK:<password>@cluster0.ryjzl0m.mongodb.net/?retryWrites=true&w=majority
@@ -22,6 +25,5 @@ app.use(cors());
 
 app.use('/api/auth', userRoutes);
 app.use('/api/sauces', sauceRoutes);
-app.use('/images', express.static(path.join(__dirname, 'images')));
 
 module.exports = app;
