@@ -5,6 +5,10 @@ const mongoose = require('mongoose');
 const app = express();
 const path = require('path');
 
+// Utilisation d'une variable d'environnement pour sécuriser la connexion à monogdb
+const dotenv = require('dotenv');
+dotenv.config();
+
 // Définition du dossier images comme statique
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
@@ -16,7 +20,7 @@ const sauceRoutes = require('./routes/sauce');
 app.use(express.json());
 
 //Connection à la base de donnée MongoDB via Mongoose
-mongoose.connect('mongodb+srv://FRSK:C52ArFE3gGiAe3O7@cluster0.ryjzl0m.mongodb.net/?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true})
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 

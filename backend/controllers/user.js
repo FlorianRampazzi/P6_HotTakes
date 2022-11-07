@@ -17,9 +17,9 @@ exports.signUp = (req, res, next) => {
             });
             user.save()
                 .then(() => res.status(201).json({message : 'Nouvel utilisateur enregistré !'}))
-                .catch( error => res.status(400).json({message : error.message}));
+                .catch( error => res.status(400).json({error}));
         })
-        .catch( error => res.status(400).json({error}));
+        .catch( error => res.status(500).json({error}));
 };
  /* Création de la fonction Login pour la connexion.
     Recherche dans la base de donnée d'un utilisateur correspondant au mail de la requête.
@@ -38,7 +38,7 @@ exports.login = (req, res, next) => {
                 bcrypt.compare(req.body.password, user.password)
                     .then(valid => {
                         if (!valid) {
-                            req.status(401).json({message : 'Identifiant et/ou mot de passe incorrect'});
+                            res.status(401).json({message : 'Identifiant et/ou mot de passe incorrect'});
                         } else {
                             res.status(200).json({
                                 userId: user._id,
