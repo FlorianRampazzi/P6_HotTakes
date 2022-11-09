@@ -8,7 +8,7 @@ const userSchema = mongoose.Schema({
        password: {type: String, required: true},
 });
 
-// Utilisation du plugin UniqueValidator afin de rentre chaque utilisateur unique par son email
+// Utilisation du plugin UniqueValidator afin de rendre chaque utilisateur unique par son email
 userSchema.plugin(uniqueValidator);
 
 // Exportation du model User

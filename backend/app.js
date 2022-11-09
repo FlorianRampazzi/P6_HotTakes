@@ -1,7 +1,9 @@
 // Importation des fichiers et package nécessaires
+
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const helmet = require("helmet");
 const app = express();
 const path = require('path');
 
@@ -32,6 +34,12 @@ app.use(cors());
 //     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
 //     next();
 // });
+
+// Utilisation d'helmet pour renforcer la sécurité des headers
+app.use(helmet());
+
+// Utilisation de Sanitize afin de sécuriser les inputs conte de l'injection bdd
+app.use(require('sanitize').middleware);
 
 // Utilisation des routes api pour l'authentification uutilisateur et les sauces
 app.use('/api/auth', userRoutes);
